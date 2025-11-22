@@ -27,6 +27,7 @@ import {
 import { CalculationType, PeriodType, RateType, CalculationResult } from './types';
 import { calculateMillion, formatCurrency } from './utils/finance';
 import { InfoSection } from './components/InfoSection';
+import { Logo } from './components/Logo';
 
 const App: React.FC = () => {
   // --- State ---
@@ -365,10 +366,13 @@ const App: React.FC = () => {
       <div className="max-w-5xl mx-auto">
         
         {/* Header */}
-        <div className="mb-10 text-center">
-          <h1 className="text-4xl font-extrabold text-brand-900 mb-2 tracking-tight">
-            iJota
-          </h1>
+        <div className="mb-10 flex flex-col items-center justify-center">
+          <div className="flex items-center gap-3 mb-2">
+            <Logo className="w-12 h-12 text-brand-700" />
+            <h1 className="text-4xl font-extrabold text-brand-900 tracking-tight">
+              iJota
+            </h1>
+          </div>
           <p className="text-slate-500 font-medium">Planejamento Financeiro Inteligente</p>
         </div>
 
