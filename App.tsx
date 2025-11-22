@@ -31,7 +31,7 @@ import { InfoSection } from './components/InfoSection';
 const App: React.FC = () => {
   // --- State ---
   const [calcType, setCalcType] = useState<CalculationType>(CalculationType.CONTRIBUTION);
-  const [initialValue, setInitialValue] = useState<string>('15000');
+  const [initialValue, setInitialValue] = useState<string>('15.000,00');
   const [interestRate, setInterestRate] = useState<string>('8');
   const [rateType, setRateType] = useState<RateType>(RateType.ANNUAL);
   
@@ -46,6 +46,21 @@ const App: React.FC = () => {
   const resultRef = useRef<HTMLDivElement>(null);
 
   // --- Handlers ---
+
+  const handleCurrencyBlur = (val: string, setter: (v: string) => void) => {
+    if (!val) return;
+    // Remove all dots (thousands) and replace comma with dot (decimal) for parsing
+    const clean = val.replace(/\./g, '').replace(',', '.');
+    const num = parseFloat(clean);
+    
+    if (!isNaN(num)) {
+      const formatted = new Intl.NumberFormat('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(num);
+      setter(formatted);
+    }
+  };
 
   const handleCalculate = () => {
     const initVal = parseFloat(initialValue.replace(/\./g, '').replace(',', '.')) || 0;
@@ -194,7 +209,7 @@ const App: React.FC = () => {
           if (e.target.value === CalculationType.CONTRIBUTION) {
               setVariableInput('10');
           } else {
-              setVariableInput('2000');
+              setVariableInput('2.000,00');
           }
         }}
         className="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all appearance-none"
@@ -250,6 +265,7 @@ const App: React.FC = () => {
             inputMode="decimal"
             value={initialValue}
             onChange={(e) => setInitialValue(e.target.value)}
+            onBlur={() => handleCurrencyBlur(initialValue, setInitialValue)}
             className="block w-full pl-10 p-3 rounded-lg border-slate-200 border bg-slate-50 text-slate-900 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 focus:bg-white transition-colors outline-none"
             placeholder="0,00"
           />
@@ -267,9 +283,11 @@ const App: React.FC = () => {
               <span className="text-slate-500 sm:text-sm">R$</span>
             </div>
             <input
-              type="number"
+              type="text"
+              inputMode="decimal"
               value={variableInput}
               onChange={(e) => setVariableInput(e.target.value)}
+              onBlur={() => handleCurrencyBlur(variableInput, setVariableInput)}
               className="block w-full pl-10 p-3 rounded-lg border-slate-200 border bg-blue-50 text-slate-900 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 focus:bg-white transition-colors outline-none"
               placeholder="2.000,00"
             />
