@@ -8,7 +8,9 @@ import {
   TrendingUp,
   PieChart as PieChartIcon,
   ChevronDown,
-  ArrowRight
+  ArrowRight,
+  CheckCircle2,
+  Clock
 } from 'lucide-react';
 import { 
   PieChart, 
@@ -189,31 +191,79 @@ const App: React.FC = () => {
     );
   };
 
-  const renderCalcTypeSelect = () => (
-    <div className="mb-8">
-      <label className="block text-sm font-semibold text-slate-700 mb-2">Tipo de Cálculo</label>
-      <div className="relative">
-        <select 
-          value={calcType}
-          onChange={(e) => {
-            setCalcType(e.target.value as CalculationType);
-            if (e.target.value === CalculationType.CONTRIBUTION) {
-                setVariableInput('10');
-            } else {
-                setVariableInput('2.000,00');
-            }
-          }}
-          className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition-all appearance-none cursor-pointer hover:bg-white"
-        >
-          <option value={CalculationType.CONTRIBUTION}>Calcular aporte mensal necessário</option>
-          <option value={CalculationType.TIME}>Calcular prazo para atingir R$ 1 milhão</option>
-        </select>
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-          <ChevronDown size={20} />
+  const renderCalcTypeSelect = () => {
+    const handleToggle = (type: CalculationType) => {
+      setCalcType(type);
+      if (type === CalculationType.CONTRIBUTION) {
+        setVariableInput('10');
+      } else {
+        setVariableInput('2.000,00');
+      }
+    };
+
+    return (
+      <div className="mb-10">
+        <label className="block text-sm font-semibold text-slate-700 mb-4 uppercase tracking-wider">
+          O que você deseja calcular?
+        </label>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <button
+            type="button"
+            onClick={() => handleToggle(CalculationType.CONTRIBUTION)}
+            className={`flex items-start gap-4 p-4 rounded-xl border-2 transition-all text-left group ${
+              calcType === CalculationType.CONTRIBUTION
+                ? 'border-brand-600 bg-brand-50 shadow-md'
+                : 'border-slate-200 bg-white hover:border-brand-300'
+            }`}
+          >
+            <div className={`p-2 rounded-lg transition-colors ${
+              calcType === CalculationType.CONTRIBUTION ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-brand-100 group-hover:text-brand-600'
+            }`}>
+              <DollarSign size={24} />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center justify-between mb-1">
+                <span className={`font-bold ${calcType === CalculationType.CONTRIBUTION ? 'text-brand-900' : 'text-slate-700'}`}>
+                  Aporte Mensal
+                </span>
+                {calcType === CalculationType.CONTRIBUTION && <CheckCircle2 size={18} className="text-brand-600" />}
+              </div>
+              <p className={`text-sm leading-tight ${calcType === CalculationType.CONTRIBUTION ? 'text-brand-700' : 'text-slate-500'}`}>
+                Calcular quanto investir por mês para atingir R$ 1 milhão.
+              </p>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleToggle(CalculationType.TIME)}
+            className={`flex items-start gap-4 p-4 rounded-xl border-2 transition-all text-left group ${
+              calcType === CalculationType.TIME
+                ? 'border-brand-600 bg-brand-50 shadow-md'
+                : 'border-slate-200 bg-white hover:border-brand-300'
+            }`}
+          >
+            <div className={`p-2 rounded-lg transition-colors ${
+              calcType === CalculationType.TIME ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-brand-100 group-hover:text-brand-600'
+            }`}>
+              <Clock size={24} />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center justify-between mb-1">
+                <span className={`font-bold ${calcType === CalculationType.TIME ? 'text-brand-900' : 'text-slate-700'}`}>
+                  Prazo de Tempo
+                </span>
+                {calcType === CalculationType.TIME && <CheckCircle2 size={18} className="text-brand-600" />}
+              </div>
+              <p className={`text-sm leading-tight ${calcType === CalculationType.TIME ? 'text-brand-700' : 'text-slate-500'}`}>
+                Calcular em quanto tempo você atinge R$ 1 milhão com seu aporte atual.
+              </p>
+            </div>
+          </button>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderInputFields = () => {
     const interestRateInput = (
