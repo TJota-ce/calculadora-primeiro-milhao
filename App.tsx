@@ -150,7 +150,7 @@ const App: React.FC = () => {
                  <span className="text-sm text-brand-900">Total em Juros</span>
                </div>
                <div className="text-right">
-                 <div className="font-bold text-brand-800">{formatCurrency(data.totalInterest)}</div>
+                 <div className="font-bold text-slate-800">{formatCurrency(data.totalInterest)}</div>
                  <div className="text-xs text-brand-600">{((data.totalInterest / data.totalAmount) * 100).toFixed(1)}% do total</div>
                </div>
             </div>
@@ -553,7 +553,7 @@ const App: React.FC = () => {
         <InfoSection />
 
         <footer className="mt-16 mb-8 text-center text-slate-400 text-sm">
-          <p>© {new Date().getFullYear()} iJota Finanças. Todos os direitos reservados.</p>
+          <p>© {new Date().getFullYear()} Solution Consultoria e Serviços Ltda. Todos os direitos reservados.</p>
         </footer>
       </div>
     </div>
